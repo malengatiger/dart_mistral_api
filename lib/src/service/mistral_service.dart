@@ -12,6 +12,7 @@ class MistralService {
 
   final String apiKey;
   static const _mistralUrl = 'https://api.mistral.ai/v1/chat/completions';
+  static const _embeddingUrl = 'https://api.mistral.ai/v1/embeddings';
 
   /*
   curl --location "https://api.mistral.ai/v1/chat/completions" \
@@ -69,7 +70,7 @@ class MistralService {
     try {
       var res = await dioUtil.sendGetRequestWithHeaders(
           path: _mistralGetUrl, queryParameters: {}, headers: headers);
-      var object = res['object'];
+
       List jList = res['data'];
       for (var value in jList) {
         mList.add(MistralModel.fromJson(value));
@@ -91,7 +92,6 @@ class MistralService {
       {required MistralRequest mistralRequest, bool? debug}) async {
     MistralResponse? mistralResponse;
     try {
-      var jsonMessages = [];
       headers['Authorization'] = 'Bearer $apiKey';
       if (debug != null) {
         if (debug) {
@@ -99,17 +99,10 @@ class MistralService {
           prettyPrintJson(mistralRequest.toJson());
         }
       }
-      for (var value in mistralRequest.messages) {
-        jsonMessages.add(value.toJson());
-      }
-      var queryParams = {
-        'model': mistralRequest.model,
-        'messages': jsonMessages
-      };
-      var resp = mistralResponse = await dioUtil.sendGetRequestWithHeaders(
-          path: '${_mistralGetUrl}models',
-          queryParameters: queryParams,
-          headers: headers);
+
+      var resp = mistralResponse = await dioUtil.sendPostRequest(
+          path: _mistralUrl,
+          body: mistralRequest.toJson());
       mistralResponse = MistralResponse.fromJson(resp);
       if ((debug != null)) {
         if ((debug)) {
@@ -139,7 +132,7 @@ class MistralService {
       }
       var queryParams = embeddingRequest.toJson();
       var resp = mistralResponse = await dioUtil.sendGetRequestWithHeaders(
-          path: '${_mistralGetUrl}embeddings',
+          path: _embeddingUrl,
           queryParameters: queryParams,
           headers: headers);
       mistralResponse = MistralEmbeddingResponse.fromJson(resp);
