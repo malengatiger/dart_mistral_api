@@ -1,7 +1,15 @@
 name: dart_mistral_api
-description: A starting point for Dart libraries or applications.
-version: 1.0.0
+description: Dart package for Mistral AI API access
+version: 1.0.0+1
 repository: https://github.com/malengatiger/dart_mistral_api
+# This package supports all platforms listed below.
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:
 
 environment:
   sdk: ^3.3.0
