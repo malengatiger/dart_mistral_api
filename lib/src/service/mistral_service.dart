@@ -7,11 +7,6 @@ class MistralService {
   /*
   💜💜 Mistral AI provides five API endpoints for its five Large Language Models
 */
-  static const openMistralTiny = 'open-mistral-7b';
-  static const openMistralSmall = 'open-mixtral-8x7b';
-  static const openMistralSmallLatest = 'mistral-small-latest';
-  static const openMistralMediumLatest = 'mistral-medium-latest';
-  static const openMistralLargeLatest = 'mistral-large-latest';
 
   final DioUtil dioUtil = DioUtil(Dio());
 
