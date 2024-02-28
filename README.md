@@ -28,7 +28,7 @@ import 'package:dart_mistral_api/dart_mistral_api.dart';
 Initialize the Mistral API client with your API key:
 
 ```dart
-final mistral = MistralAPI(apiKey: 'your_api_key');
+final mistral = MistralService(apiKey: 'your_api_key');
 ```
 
 Now you can use the various methods provided by the Mistral API. For example:  

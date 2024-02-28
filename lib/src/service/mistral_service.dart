@@ -13,6 +13,7 @@ class MistralService {
   final String apiKey;
   static const _mistralUrl = 'https://api.mistral.ai/v1/chat/completions';
   static const _embeddingUrl = 'https://api.mistral.ai/v1/embeddings';
+  static const _mistralModelUrl = 'https://api.mistral.ai/v1/models';
 
   /*
   curl --location "https://api.mistral.ai/v1/chat/completions" \
@@ -40,8 +41,7 @@ class MistralService {
 
   MistralService(this.apiKey);
 
-  static const mm = '🍐🍐🍐🍐MistralService 🍐';
-  static const _mistralGetUrl = 'https://api.mistral.ai/v1/';
+  static const mm = '🍐🍐MistralService 🍐';
 
   init() {}
 
@@ -58,6 +58,7 @@ class MistralService {
   Future<List<MistralModel>> listModels({bool? debug}) async {
     List<MistralModel> mList = [];
     headers['Authorization'] = 'Bearer $apiKey';
+
     if (debug != null) {
       if ((debug)) {
         prettyPrintJson({
@@ -69,7 +70,7 @@ class MistralService {
     }
     try {
       var res = await dioUtil.sendGetRequestWithHeaders(
-          path: _mistralGetUrl, queryParameters: {}, headers: headers);
+          path: _mistralModelUrl, queryParameters: {}, headers: headers);
 
       List jList = res['data'];
       for (var value in jList) {
@@ -93,6 +94,7 @@ class MistralService {
     MistralResponse? mistralResponse;
     try {
       headers['Authorization'] = 'Bearer $apiKey';
+
       if (debug != null) {
         if (debug) {
           print('$mm sending mistralRequest to Mistral AI ........ ');
