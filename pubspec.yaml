@@ -10,7 +10,6 @@ environment:
 dependencies:
   dio: ^5.4.1
   json_annotation: ^4.8.1
-  pretty_print_json: ^1.0.1
 
 
 dev_dependencies:
