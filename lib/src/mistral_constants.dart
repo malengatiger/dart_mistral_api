@@ -1,4 +1,4 @@
-class Constants {
+class MistralConstants {
   static const openMistralTiny = 'open-mistral-7b';
   static const openMistralSmall = 'open-mixtral-8x7b';
   static const mistralSmallLatest = 'mistral-small-latest';

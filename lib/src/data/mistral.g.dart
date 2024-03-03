@@ -43,6 +43,7 @@ MistralRequest _$MistralRequestFromJson(Map<String, dynamic> json) =>
       topP: json['top_p'] as int?,
       maxTokens: json['max_tokens'] as int?,
       safePrompt: json['safe_prompt'] as bool?,
+      stream: json['stream'] as bool?,
       randomSeed: json['random_seed'] as int?,
     );
 
@@ -55,6 +56,7 @@ Map<String, dynamic> _$MistralRequestToJson(MistralRequest instance) =>
       'max_tokens': instance.maxTokens,
       'safe_prompt': instance.safePrompt,
       'random_seed': instance.randomSeed,
+      'stream': instance.stream,
     };
 
 MistralResponse _$MistralResponseFromJson(Map<String, dynamic> json) =>

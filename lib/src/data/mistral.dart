@@ -44,15 +44,17 @@ class MistralRequest {
   bool? safePrompt;
   @JsonKey(name: 'random_seed')
   int? randomSeed;
+  bool? stream;
 
   MistralRequest(
       {required this.model,
       required this.messages,
-      required this.temperature,
-      required this.topP,
-      required this.maxTokens,
-      required this.safePrompt,
-      required this.randomSeed});
+      this.temperature,
+      this.topP,
+      this.maxTokens,
+      this.safePrompt,
+      this.stream,
+      this.randomSeed});
 
   factory MistralRequest.fromJson(Map<String, dynamic> json) =>
       _$MistralRequestFromJson(json);
@@ -129,7 +131,8 @@ class MistralEmbedding {
   List<double>? embedding;
   int? index;
 
-  MistralEmbedding({required this.object, required this.embedding, required this.index});
+  MistralEmbedding(
+      {required this.object, required this.embedding, required this.index});
 
   factory MistralEmbedding.fromJson(Map<String, dynamic> json) =>
       _$MistralEmbeddingFromJson(json);

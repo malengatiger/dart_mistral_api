@@ -1,4 +1,7 @@
-import 'package:dart_mistral_api/dart_mistral_api.dart';
+
+
+import 'package:mistral_sgela_ai/mistral_sgela_ai.dart';
+import 'package:mistral_sgela_ai/src/mistral_constants.dart';
 
 Future<void> main() async {
   var mistral = MistralService('<apiKey>');
@@ -9,7 +12,8 @@ Future<void> main() async {
   }
   //
   List<MistralMessage> messages = [];
-  //add your messages
+  messages.add(MistralMessage('user', 'Hello!'));
+  //add more messages ....
   var mistralRequest = MistralRequest(
       model: 'model',
       messages: messages,
@@ -29,9 +33,10 @@ Future<void> main() async {
 
   //embeddings
   List<String> input = [];
+  input.add('I need your assistance for cooking rice');
   //add your texts
   MistralEmbeddingRequest request = MistralEmbeddingRequest(
-      encodingFormat: 'float', model: '<model>', input: input);
+      encodingFormat: 'float', model: MistralConstants.mistralSmallLatest, input: input);
   MistralEmbeddingResponse? embeddingResponse = await mistral
       .sendEmbeddingRequest(embeddingRequest: request, debug: true);
   //print response
