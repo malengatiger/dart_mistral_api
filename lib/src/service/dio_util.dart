@@ -6,7 +6,7 @@ class DioUtil {
 
   DioUtil(this.dio);
 
-  Future<dynamic> sendGetRequestWithHeaders(
+  Future<Response> sendGetRequestWithHeaders(
       {required String path,
       required Map<String, dynamic> queryParameters,
       required dynamic headers, bool? debug = false}) async {
@@ -19,8 +19,9 @@ class DioUtil {
           '...: 🍎🍎🍎 headers: $headers 🍎🍎');
     }
 
+    late Response response;
+
     try {
-      Response response;
       response = await dio.get(
         path,
         queryParameters: queryParameters,
@@ -35,7 +36,7 @@ class DioUtil {
             '$mm Dio network response: 🥬🥬🥬🥬🥬🥬 '
                 ' data: ${response.data}');
       }
-      return response.data;
+      return response;
     } catch (e,s) {
       print('$mm Dio network response: 👿👿👿👿 ERROR: $e $s');
       print(e);
@@ -43,7 +44,7 @@ class DioUtil {
     }
   }
 
-  Future<dynamic> sendPostRequest(
+  Future<Response> sendPostRequest(
       {required String path,
       required dynamic body,
       required dynamic headers, bool? debug = false}) async {
@@ -53,17 +54,22 @@ class DioUtil {
       print('$mm Dio sendPostRequest ...: 🍎🍎🍎 headers: $headers 🍎🍎');
 
     }
+    late Response response;
+
     try {
-      Response response;
       response = await dio.post(
         path,
         data: body,
         options: Options(headers: headers, responseType: ResponseType.json),
         onReceiveProgress: (count, total) {
-          print('$mm onReceiveProgress: count: $count total: $total');
+          if (debug) {
+            print('$mm onReceiveProgress: count: $count total: $total');
+          }
         },
         onSendProgress: (count, total) {
-          print('$mm onSendProgress: count: $count total: $total');
+          if (debug) {
+            print('$mm onSendProgress: count: $count total: $total');
+          }
         },
       ).timeout(const Duration(seconds: 300));
 
@@ -73,7 +79,7 @@ class DioUtil {
         print(
             '$mm .... network POST response,  data: ${response.data} 💚💚');
       }
-      return response.data;
+      return response;
     } catch (e, s) {
       print('$mm .... network POST error response, '
           '👿👿👿👿 $e - $s 👿👿👿👿');

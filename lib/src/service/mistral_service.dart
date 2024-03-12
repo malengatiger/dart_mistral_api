@@ -46,19 +46,23 @@ class MistralService {
       }
     }
     try {
-      var res = await dioUtil.sendGetRequestWithHeaders(
+      Response res = await dioUtil.sendGetRequestWithHeaders(
           path: _mistralModelUrl, queryParameters: {}, headers: headers, debug: debug);
 
-      List jList = res['data'];
-      for (var value in jList) {
-        mList.add(MistralModel.fromJson(value));
-      }
-      if (debug != null) {
-        if ((debug)) {
-          print('\n\n$mm listModels request found: '
-              '💜 ${mList.length} Mistral Models ');
-          prettyPrintJson(res);
-          print('\n\n$mm End of 💜💜 ${mList.length} Mistral Models \n');
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        List jList = res.data;
+        for (var value in jList) {
+          mList.add(MistralModel.fromJson(value));
+        }
+        if (debug != null) {
+          if ((debug)) {
+            print('\n\n$mm listModels request found: '
+                '💜 ${mList.length} Mistral Models ');
+            for (var model in mList) {
+              print('$mm Model 💜💜 ${model.toJson()} ');
+            }
+            print('\n\n$mm End of 💜💜 ${mList.length} Mistral Models \n');
+          }
         }
       }
     } catch (e, s) {
@@ -87,21 +91,29 @@ class MistralService {
         }
       }
 
-      var resp = mistralResponse = await dioUtil.sendPostRequest(
+      Response resp = await dioUtil.sendPostRequest(
           path: _mistralUrl, body: mistralRequest.toJson(), headers: headers, debug: debug);
-      mistralResponse = MistralResponse.fromJson(resp);
-      if ((debug != null)) {
-        if ((debug)) {
-          print('$mm response from Mistral $blue: ${mistralResponse.toJson()}');
-          prettyPrintJson(resp);
+      if (resp.statusCode == 200 || resp.statusCode == 201) {
+        var mJson = jsonDecode(resp.data);
+        mistralResponse = MistralResponse.fromJson(mJson);
+        if ((debug != null)) {
+          if ((debug)) {
+            print('$mm response from Mistral $blue}');
+            prettyPrintJson(resp.data);
+          }
         }
+      } else {
+        print('$mm sendMistralRequest response: 🔵 '
+            '${resp.statusCode} - ${resp.statusMessage}');
+        throw Exception(['Mistral Exception occurred, status: ${resp.statusCode}']);
+
       }
     } catch (e, s) {
       print('$mm ERROR: $e - $s');
       throw Exception(['Mistral Exception occurred: $e - $s']);
     }
     print('$mm sendMistralRequest response: 🔵 totalTokens consumed: '
-        '🍎 ${mistralResponse.usage.totalTokens} 🍎 ');
+        '🍎 ${mistralResponse?.usage.totalTokens} 🍎 ');
     return mistralResponse;
   }
 
@@ -123,14 +135,17 @@ class MistralService {
         }
       }
       var queryParams = embeddingRequest.toJson();
-      var resp = mistralResponse = await dioUtil.sendGetRequestWithHeaders(
+      Response resp  = await dioUtil.sendGetRequestWithHeaders(
           path: _embeddingUrl, queryParameters: queryParams, headers: headers);
-      mistralResponse = MistralEmbeddingResponse.fromJson(resp);
-      if ((debug != null)) {
-        if ((debug)) {
-          print('$mm Mistral AI embedding response: '
-              '$blue ${mistralResponse.toJson()}');
-          prettyPrintJson(resp);
+      if (resp.statusCode == 200) {
+        var mJson = jsonDecode(resp.data);
+        mistralResponse = MistralEmbeddingResponse.fromJson(mJson);
+        if ((debug != null)) {
+          if ((debug)) {
+            print('$mm Mistral AI embedding response: '
+                '$blue ${mistralResponse.toJson()}');
+            prettyPrintJson(mJson);
+          }
         }
       }
     } catch (e, s) {
@@ -139,7 +154,8 @@ class MistralService {
     }
     print('$mm Mistral sendEmbeddingRequest responded; '
         '$blue totalTokens consumed: '
-        '🍎 ${mistralResponse.usage?.totalTokens} 🍎 ');
+        '🍎 ${mistralResponse?.usage?.totalTokens} 🍎 ');
+
     return mistralResponse;
   }
 
@@ -162,13 +178,16 @@ class MistralService {
           temperature: 0.3,
           randomSeed: 123);
 
-      var mJson = await dioUtil.sendPostRequest(
+      Response res = await dioUtil.sendPostRequest(
           path: _mistralUrl, body: request.toJson(), headers: headers, debug: debug);
-      mistralResponse = MistralResponse.fromJson(mJson);
-      if (debug!) {
-        print('$mm response from saying Hello! to Mistral AI, '
-            '🍎tokens: ${mistralResponse.usage.totalTokens}');
-        prettyPrintJson(mJson);
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        var mJson = jsonDecode(res.data);
+        mistralResponse = MistralResponse.fromJson(mJson);
+        if (debug!) {
+          print('$mm response from saying Hello! to Mistral AI, '
+              '🍎tokens: ${mistralResponse.usage.totalTokens}');
+          prettyPrintJson(mJson);
+        }
       }
 
     } catch (e, s) {
