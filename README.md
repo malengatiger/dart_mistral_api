@@ -21,7 +21,7 @@ Add the following to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  mistral_sgela_ai: ^1.1.0
+  mistral_sgela_ai: ^1.1.0+1
 ```
 
 Then, run:

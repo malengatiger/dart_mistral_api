@@ -145,11 +145,11 @@ class MistralService {
 
   ///Send Hello!
 
-  Future<MistralResponse?> sendHello() async {
+  Future<MistralResponse?> sendHello({bool? debug = true}) async {
     print('$mm sending Hello! to Mistral AI ... 🍎');
     List<MistralMessage> messages = [];
     messages.add(MistralMessage('model', 'I am a Super Tutor'));
-    messages.add(MistralMessage('user', 'Hello!'));
+    messages.add(MistralMessage('user', 'Hello! help me with algebra fundamentals'));
 
     MistralResponse? mistralResponse;
     try {
@@ -163,12 +163,14 @@ class MistralService {
           randomSeed: 123);
 
       var mJson = await dioUtil.sendPostRequest(
-          path: _mistralUrl, body: request.toJson(), headers: headers, debug: true);
+          path: _mistralUrl, body: request.toJson(), headers: headers, debug: debug);
       mistralResponse = MistralResponse.fromJson(mJson);
-      print('$mm response from saying Hello! to Mistral AI, '
-          '🍎tokens: ${mistralResponse.usage.totalTokens}');
+      if (debug!) {
+        print('$mm response from saying Hello! to Mistral AI, '
+            '🍎tokens: ${mistralResponse.usage.totalTokens}');
+        prettyPrintJson(mJson);
+      }
 
-      prettyPrintJson(mistralResponse.toJson());
     } catch (e, s) {
       print('$mm ERROR: $e - $s');
     }

@@ -54,3 +54,7 @@
 
 - Refactored Mistral request error handling
 
+## 1.1.0+1
+
+- Refactored Mistral debug parameters
+

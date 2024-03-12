@@ -1,6 +1,6 @@
 name: mistral_sgela_ai
 description: Dart package for Mistral AI API access
-version: 1.1.0
+version: 1.1.0+1
 repository: https://github.com/malengatiger/dart_mistral_api
 # This package supports all platforms listed below.
 platforms:
